@@ -2,7 +2,6 @@ import { URL_DA_API } from "./modules/rote.js";
 
 function initAddMovies(data) {
   const moviesData = data.results;
-  console.log(data.results[0]);
 
   const moviesContainer = document.querySelector(".movies-container");
 
@@ -20,6 +19,7 @@ function initAddMovies(data) {
 
         const movieImg = document.createElement("img");
         movieImg.src = `https://image.tmdb.org/t/p/w500/${item.poster_path}`;
+        movieImg.alt = "Poster do Filme";
 
         movieImgDiv.appendChild(movieImg);
         movieHeader.appendChild(movieImgDiv);
@@ -124,6 +124,7 @@ function initAddMovies(data) {
 
 async function getPopularMovies() {
   const url = `https://api.themoviedb.org/3/movie/popular?api_key=${URL_DA_API}&language=pt-BR&page=1`;
+
   await fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -132,3 +133,42 @@ async function getPopularMovies() {
 }
 
 getPopularMovies();
+
+function clearMovieList() {
+  const moviesElement = document.querySelectorAll(".movie");
+
+  moviesElement.forEach((item) => {
+    item.remove();
+  });
+}
+
+function searchMovie() {
+  const searchInput = document.querySelector(".movie-search").value;
+
+  if (searchInput !== "") {
+    async function getSearchedMovie() {
+      const url = `https://api.themoviedb.org/3/search/movie?api_key=${URL_DA_API}&language=pt-BR&&query=${searchInput}`;
+
+      await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          clearMovieList();
+          initAddMovies(data);
+        });
+    }
+    getSearchedMovie();
+  } else {
+    clearMovieList();
+    getPopularMovies();
+  }
+}
+
+const searchButton = document.querySelector(".search-button");
+const searchBox = document.querySelector(".movie-search");
+
+searchButton.addEventListener("click", () => searchMovie());
+searchBox.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    searchMovie();
+  }
+});

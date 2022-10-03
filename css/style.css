@@ -33,28 +33,39 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
   border: none;
   border-radius: 8px;
   background-color: #8a8a8a6b;
+  overflow: hidden;
 }
 
 .nav-search input {
   width: 100%;
-  padding: 26px 0;
+  padding: 28px 24px;
   background-color: transparent;
   border: none;
   font-size: 1.125rem;
   font-weight: 500;
-  color: #8A8A8A;
+  color: #bbb;
   font-family: "Kumbh Sans", sans-serif;
 }
 
 .nav-search input:focus {
+  background-color: #8a8a8a20;
+  color: #fff;
   outline: none;
+}
+
+.search-button {
+  padding: 25px 16px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #8a8a8a40;
 }
 
 .nav-filter {
@@ -102,9 +113,11 @@ h1 {
 }
 
 .movie-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  max-height: 144px;
-  border-radius: 100%;
+  border-radius: 8px;
   box-shadow: 8px 8px 18px #00000050;
 }
 
