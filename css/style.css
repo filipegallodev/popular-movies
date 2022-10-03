@@ -79,6 +79,7 @@ h1 {
 
 .movie {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   background-color: #1d1c3b;
@@ -89,8 +90,10 @@ h1 {
 
 .movie-header {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 48px;
 }
 
@@ -142,4 +145,27 @@ body {
   font-size: 1.125rem;
   line-height: 22px;
   font-family: "Kumbh Sans", sans-serif;
+}
+
+@media (max-width: 1300px) {
+  .movie {
+    margin: 0 24px;
+  }
+}
+
+@media (max-width: 715px) {
+  .nav-search {
+    width: 95%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .movie {
+    justify-content: center;
+    gap: 48px;
+  }
+
+  .movie p {
+    max-width: 100%;
+  }
 }
