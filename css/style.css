@@ -168,6 +168,11 @@ h1 {
   font-weight: 500;
 }
 
+.see-more {
+  color: #fff;
+  cursor: pointer;
+}
+
 /* end of main */
 
 body {

@@ -103,8 +103,24 @@ function initAddMovies(data) {
 
     function addMovieDescription(item) {
       const movieDescription = document.createElement("p");
+
       if (item.overview) {
-        movieDescription.innerHTML = item.overview;
+        const seeMore = document.createElement("span");
+
+        seeMore.classList.add("see-more");
+        seeMore.innerHTML = "Ver mais";
+
+        if (item.overview.length > 120) {
+          movieDescription.innerHTML = item.overview.slice(0, 120) + "... ";
+
+          movieDescription.appendChild(seeMore);
+        } else {
+          movieDescription.innerHTML = item.overview;
+        }
+
+        seeMore.addEventListener("click", () => {
+          movieDescription.innerHTML = item.overview;
+        });
       } else {
         movieDescription.innerHTML = "Nenhuma descrição fornecida.";
       }
@@ -142,33 +158,36 @@ function clearMovieList() {
   });
 }
 
-function searchMovie() {
-  const searchInput = document.querySelector(".movie-search").value;
+function initSearchMovie() {
+  function searchMovie() {
+    const searchInput = document.querySelector(".movie-search").value;
 
-  if (searchInput !== "") {
-    async function getSearchedMovie() {
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=${URL_DA_API}&language=pt-BR&&query=${searchInput}`;
+    if (searchInput !== "") {
+      async function getSearchedMovie() {
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${URL_DA_API}&language=pt-BR&&query=${searchInput}`;
 
-      await fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          clearMovieList();
-          initAddMovies(data);
-        });
+        await fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            clearMovieList();
+            initAddMovies(data);
+          });
+      }
+      getSearchedMovie();
+    } else {
+      clearMovieList();
+      getPopularMovies();
     }
-    getSearchedMovie();
-  } else {
-    clearMovieList();
-    getPopularMovies();
   }
+
+  const searchButton = document.querySelector(".search-button");
+  const searchBox = document.querySelector(".movie-search");
+
+  searchButton.addEventListener("click", () => searchMovie());
+  searchBox.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      searchMovie();
+    }
+  });
 }
-
-const searchButton = document.querySelector(".search-button");
-const searchBox = document.querySelector(".movie-search");
-
-searchButton.addEventListener("click", () => searchMovie());
-searchBox.addEventListener("keypress", (event) => {
-  if (event.key === "Enter") {
-    searchMovie();
-  }
-});
+initSearchMovie();
