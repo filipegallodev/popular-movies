@@ -97,10 +97,15 @@ h1 {
   gap: 48px;
 }
 
-.movie-header img.movie-picture {
+.movie-header img {
+  max-width: 144px;
+}
+
+.movie-picture {
+  overflow: hidden;
+  max-height: 144px;
   border-radius: 100%;
-  max-width: 200px;
-  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.356);
+  box-shadow: 8px 8px 18px #00000050;
 }
 
 .movie-header h2 {
@@ -108,12 +113,25 @@ h1 {
   font-weight: 500;
 }
 
-.movie-name {
+.movie-profile {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 24px;
+}
+
+.movie-title-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  max-width: 340px;
+}
+
+.movie-title-container span {
+  font-size: 1rem;
+  color: #ddd;
 }
 
 .movie-rating {
