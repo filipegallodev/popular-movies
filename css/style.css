@@ -1,0 +1,145 @@
+@charset "UTF-8";
+
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600&display=swap");
+
+/* header */
+
+h1 {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 44px;
+  margin-top: 64px;
+}
+
+/* end of header */
+
+/* nav */
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 48px;
+}
+
+.nav-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  background-color: #8a8a8a6b;
+}
+
+.nav-search input {
+  width: 100%;
+  padding: 26px 0;
+  background-color: transparent;
+  border: none;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #8A8A8A;
+  font-family: "Kumbh Sans", sans-serif;
+}
+
+.nav-search input:focus {
+  outline: none;
+}
+
+.nav-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+/* end of nav */
+
+/* main */
+
+.movies-container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 64px auto;
+}
+
+.movie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1d1c3b;
+  padding: 32px 40px;
+  border-radius: 8px;
+  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.356);
+}
+
+.movie-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 48px;
+}
+
+.movie-header img.movie-picture {
+  border-radius: 100%;
+  max-width: 200px;
+  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.356);
+}
+
+.movie-header h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.movie-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+}
+
+.movie-rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 48px;
+}
+
+.movie-rating div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.movie p {
+  max-width: 50%;
+  color: #b5bbc7;
+  line-height: 32px;
+  font-weight: 500;
+}
+
+/* end of main */
+
+body {
+  background-color: #17162e;
+  color: #fff;
+  font-size: 1.125rem;
+  line-height: 22px;
+  font-family: "Kumbh Sans", sans-serif;
+}
