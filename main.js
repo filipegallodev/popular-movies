@@ -31,7 +31,7 @@ function initAddMovies(data) {
 
         function addMovieTitle(item) {
           const movieTitle = document.createElement("h2");
-          movieTitle.innerHTML = item.original_title;
+          movieTitle.innerHTML = item.title;
 
           const movieYear = document.createElement("span");
           const year = item.release_date.slice(0, 4);
