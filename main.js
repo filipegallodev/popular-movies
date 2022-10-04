@@ -3,6 +3,11 @@ import { URL_DA_API } from "./modules/rote.js";
 function initAddMovies(data) {
   const moviesData = data.results;
 
+  const savedFavoritedMovies = JSON.parse(
+    localStorage.getItem("favoriteMovies")
+  );
+  const userFavoriteMovies = savedFavoritedMovies.moviesIdsArray;
+
   const moviesContainer = document.querySelector(".movies-container");
 
   function addMovie(item) {
@@ -66,16 +71,22 @@ function initAddMovies(data) {
 
           function addMovieFavorite(item) {
             const movieFavorite = document.createElement("div");
+            movieFavorite.classList.add("favorite-movie");
+            movieFavorite.classList.add(`movie-id-${item.id}`);
 
             const favoriteImg = document.createElement("img");
             const favoriteSpan = document.createElement("span");
 
-            if (item.isFavorited) {
+            item.id = item.id.toString();
+
+            if (userFavoriteMovies.includes(item.id)) {
+              movieFavorite.classList.add("favoritado");
               favoriteImg.src = "../img/heart-full.svg";
+              favoriteSpan.innerHTML = "Desfavoritar";
             } else {
               favoriteImg.src = "../img/heart.svg";
+              favoriteSpan.innerHTML = "Favoritar";
             }
-            favoriteSpan.innerHTML = "Favoritar";
 
             movieFavorite.appendChild(favoriteImg);
             movieFavorite.appendChild(favoriteSpan);
@@ -136,6 +147,8 @@ function initAddMovies(data) {
   moviesData.forEach((item) => {
     addMovie(item);
   });
+
+  initFavoriteMovies();
 }
 
 async function getPopularMovies() {
@@ -147,7 +160,6 @@ async function getPopularMovies() {
       initAddMovies(data);
     });
 }
-
 getPopularMovies();
 
 function clearMovieList() {
@@ -156,6 +168,20 @@ function clearMovieList() {
   moviesElement.forEach((item) => {
     item.remove();
   });
+}
+
+function initNoResults() {
+  const moviesContainer = document.querySelector(".movies-container");
+
+  const noResultsElement = document.createElement("div");
+  noResultsElement.classList.add("movie");
+
+  const noResultsTitle = document.createElement("h2");
+  noResultsTitle.innerHTML = "Nenhum resultado encontrado.";
+
+  noResultsElement.appendChild(noResultsTitle);
+
+  moviesContainer.appendChild(noResultsElement);
 }
 
 function initSearchMovie() {
@@ -170,7 +196,11 @@ function initSearchMovie() {
           .then((response) => response.json())
           .then((data) => {
             clearMovieList();
-            initAddMovies(data);
+            if (data.results.length <= 0) {
+              initNoResults();
+            } else {
+              initAddMovies(data);
+            }
           });
       }
       getSearchedMovie();
@@ -191,3 +221,44 @@ function initSearchMovie() {
   });
 }
 initSearchMovie();
+
+function initFavoriteMovies() {
+  const favoriteMovie = document.querySelectorAll(".favorite-movie");
+
+  function addFavoriteMovies(item) {
+    const favoriteIcon = item.querySelector("img");
+    const favoriteText = item.querySelector("span");
+
+    item.classList.toggle("favoritado");
+
+    if (item.classList.contains("favoritado")) {
+      favoriteIcon.src = "../img/heart-full.svg";
+      favoriteText.innerHTML = "Desfavoritar";
+      console.log(favoriteText.innerHTML)
+      updateFavoriteMovies();
+    } else {
+      favoriteIcon.src = "../img/heart.svg";
+      favoriteText.innerHTML = "Favoritar";
+      console.log(favoriteText.innerHTML)
+      updateFavoriteMovies();
+    }
+  }
+
+  function updateFavoriteMovies() {
+    const userFavoriteMovies = document.querySelectorAll(".favoritado");
+
+    const moviesIdsArray = Array();
+    userFavoriteMovies.forEach((item) => {
+      const movieIdClass = item.classList[1];
+      const movieUniqueId = movieIdClass.slice(9, movieIdClass.length);
+
+      moviesIdsArray.push(movieUniqueId);
+    });
+
+    localStorage.setItem("favoriteMovies", JSON.stringify({ moviesIdsArray }));
+  }
+
+  favoriteMovie.forEach((item) => {
+    item.addEventListener("click", () => addFavoriteMovies(item));
+  });
+}

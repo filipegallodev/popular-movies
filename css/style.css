@@ -161,6 +161,14 @@ h1 {
   gap: 12px;
 }
 
+.favorite-movie {
+  cursor: pointer;
+}
+
+.favorite-movie:hover {
+  color: #eee;
+}
+
 .movie p {
   max-width: 50%;
   color: #b5bbc7;
