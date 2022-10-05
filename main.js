@@ -6,9 +6,9 @@ function initAddMovies(data) {
   const savedFavoritedMovies = JSON.parse(
     localStorage.getItem("favoriteMovies")
   );
-  const userFavoriteMovies = savedFavoritedMovies.moviesIdsArray;
 
   const moviesContainer = document.querySelector(".movies-container");
+  const favoriteFilter = document.querySelector(".nav-filter");
 
   function addMovie(item) {
     const movieElement = document.createElement("div");
@@ -79,10 +79,16 @@ function initAddMovies(data) {
 
             item.id = item.id.toString();
 
-            if (userFavoriteMovies.includes(item.id)) {
-              movieFavorite.classList.add("favoritado");
-              favoriteImg.src = "../img/heart-full.svg";
-              favoriteSpan.innerHTML = "Desfavoritar";
+            if (savedFavoritedMovies !== null) {
+              const userFavoriteMovies = savedFavoritedMovies.moviesIdsArray;
+              if (userFavoriteMovies.includes(item.id)) {
+                movieFavorite.classList.add("favoritado");
+                favoriteImg.src = "../img/heart-full.svg";
+                favoriteSpan.innerHTML = "Desfavoritar";
+              } else {
+                favoriteImg.src = "../img/heart.svg";
+                favoriteSpan.innerHTML = "Favoritar";
+              }
             } else {
               favoriteImg.src = "../img/heart.svg";
               favoriteSpan.innerHTML = "Favoritar";
@@ -144,9 +150,27 @@ function initAddMovies(data) {
     moviesContainer.appendChild(movieElement);
   }
 
-  moviesData.forEach((item) => {
-    addMovie(item);
-  });
+  if (moviesData !== undefined) {
+    moviesData.forEach((item) => {
+      if (favoriteFilter.classList.contains("checked")) {
+        item.id = item.id.toString();
+        if (savedFavoritedMovies !== null) {
+          if (savedFavoritedMovies.moviesIdsArray.length <= 0) {
+            addMovie(item);
+          } else if (savedFavoritedMovies.moviesIdsArray.includes(item.id)) {
+            addMovie(item);
+          }
+        } else {
+          addMovie(item);
+        }
+      } else {
+        addMovie(item);
+      }
+    });
+  }
+  else {
+    addMovie(data)
+  }
 
   initFavoriteMovies();
 }
@@ -161,6 +185,29 @@ async function getPopularMovies() {
     });
 }
 getPopularMovies();
+
+async function getFavoriteMovies() {
+  const savedFavoritedMovies = JSON.parse(
+    localStorage.getItem("favoriteMovies")
+  );
+
+  if (savedFavoritedMovies.moviesIdsArray.length >= 1) {
+    const userFavoriteMovies = savedFavoritedMovies.moviesIdsArray;
+
+    userFavoriteMovies.forEach((item) => {
+      async function addFavoriteMovies(item) {
+        const url = `https://api.themoviedb.org/3/movie/${item}?api_key=${URL_DA_API}&language=pt-BR`;
+
+        await fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            initAddMovies(data);
+          });
+      }
+      addFavoriteMovies(item);
+    });
+  }
+}
 
 function clearMovieList() {
   const moviesElement = document.querySelectorAll(".movie");
@@ -232,33 +279,80 @@ function initFavoriteMovies() {
     item.classList.toggle("favoritado");
 
     if (item.classList.contains("favoritado")) {
+      item.classList.remove("desfavoritado");
       favoriteIcon.src = "../img/heart-full.svg";
       favoriteText.innerHTML = "Desfavoritar";
-      console.log(favoriteText.innerHTML)
-      updateFavoriteMovies();
+
+      initUpdateFavoriteMovies();
     } else {
       favoriteIcon.src = "../img/heart.svg";
       favoriteText.innerHTML = "Favoritar";
-      console.log(favoriteText.innerHTML)
-      updateFavoriteMovies();
+      item.classList.add("desfavoritado");
+
+      initUpdateFavoriteMovies();
     }
   }
 
-  function updateFavoriteMovies() {
-    const userFavoriteMovies = document.querySelectorAll(".favoritado");
+  function initUpdateFavoriteMovies() {
+    const savedFavoritedMovies = JSON.parse(
+      localStorage.getItem("favoriteMovies")
+    );
+    if (savedFavoritedMovies !== null) {
+      const moviesIdsArray = savedFavoritedMovies.moviesIdsArray;
+      updateFavoriteMovies(moviesIdsArray);
+    } else {
+      const moviesIdsArray = Array();
+      updateFavoriteMovies(moviesIdsArray);
+    }
 
-    const moviesIdsArray = Array();
-    userFavoriteMovies.forEach((item) => {
-      const movieIdClass = item.classList[1];
-      const movieUniqueId = movieIdClass.slice(9, movieIdClass.length);
+    function updateFavoriteMovies(moviesIdsArray) {
+      favoriteMovie.forEach((item) => {
+        if (
+          item.classList.contains("favoritado") ||
+          item.classList.contains("desfavoritado")
+        ) {
+          const movieIdClass = item.classList[1];
+          const movieUniqueId = movieIdClass.slice(9, movieIdClass.length);
 
-      moviesIdsArray.push(movieUniqueId);
-    });
+          if (moviesIdsArray.includes(movieUniqueId)) {
+            if (item.classList.contains("desfavoritado")) {
+              moviesIdsArray.splice(moviesIdsArray.indexOf(movieUniqueId), 1);
+              item.classList.remove("desfavoritado");
+            }
+          } else {
+            moviesIdsArray.push(movieUniqueId);
+          }
+        }
+      });
 
-    localStorage.setItem("favoriteMovies", JSON.stringify({ moviesIdsArray }));
+      localStorage.setItem(
+        "favoriteMovies",
+        JSON.stringify({ moviesIdsArray })
+      );
+    }
   }
 
   favoriteMovie.forEach((item) => {
     item.addEventListener("click", () => addFavoriteMovies(item));
   });
 }
+
+function initFavoriteMoviesFilter() {
+  const favoriteFilter = document.querySelector(".nav-filter");
+  const favoriteFilterBox = favoriteFilter.querySelector("img");
+
+  favoriteFilter.addEventListener("click", () => {
+    favoriteFilter.classList.toggle("checked");
+    
+    clearMovieList();
+    if (favoriteFilter.classList.contains("checked")) {
+      favoriteFilterBox.src = "./img/rectangle-full.svg";
+      getFavoriteMovies();
+    } else {
+      favoriteFilterBox.src = "./img/rectangle.svg";
+      getPopularMovies();
+    }
+
+  });
+}
+initFavoriteMoviesFilter();
