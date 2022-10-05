@@ -62,7 +62,7 @@ function initAddMovies(data) {
           const ratingRange = document.createElement("span");
 
           ratingStar.src = "../img/star.svg";
-          ratingRange.innerHTML = item.vote_average;
+          ratingRange.innerHTML = Math.round(item.vote_average * 10) / 10;
 
           ratingDiv.appendChild(ratingStar);
           ratingDiv.appendChild(ratingRange);
@@ -167,9 +167,8 @@ function initAddMovies(data) {
         addMovie(item);
       }
     });
-  }
-  else {
-    addMovie(data)
+  } else {
+    addMovie(data);
   }
 
   initFavoriteMovies();
@@ -343,7 +342,7 @@ function initFavoriteMoviesFilter() {
 
   favoriteFilter.addEventListener("click", () => {
     favoriteFilter.classList.toggle("checked");
-    
+
     clearMovieList();
     if (favoriteFilter.classList.contains("checked")) {
       favoriteFilterBox.src = "./img/rectangle-full.svg";
@@ -352,7 +351,6 @@ function initFavoriteMoviesFilter() {
       favoriteFilterBox.src = "./img/rectangle.svg";
       getPopularMovies();
     }
-
   });
 }
 initFavoriteMoviesFilter();
