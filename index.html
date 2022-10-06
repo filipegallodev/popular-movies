@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
 
     <title>Filmes Populares</title>
   </head>
@@ -14,7 +16,7 @@
   <body>
     <header>
       <div>
-        <h1>Filmes Populares</h1>
+        <h1 class="page-title">Filmes Populares (Top 20)</h1>
       </div>
     </header>
     <div class="nav">
@@ -24,7 +26,7 @@
             class="movie-search"
             type="text"
             name="nav-search"
-            placeholder="Digite algum filme para pesquisar..."
+            placeholder="Pesquise por algum filme aqui..."
           />
           <img class="search-button" src="img/search-icon.svg" alt="Search" />
         </div>
@@ -42,7 +44,17 @@
     </main>
 
     <footer>
-      <div><span>Desenvolvido com ❤ por <a href="">Filipe</a>.</span></div>
+      <div class="footer-container">
+        <span
+          >Desenvolvido com ❤ por
+          <a
+            href="https://github.com/filipegallodev"
+            target="external"
+            rel="_blank"
+            >Filipe</a
+          >.</span
+        >
+      </div>
     </footer>
 
     <script type="module" src="main.js"></script>
