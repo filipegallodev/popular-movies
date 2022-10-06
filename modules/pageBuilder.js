@@ -37,9 +37,10 @@ export function addMovie(movieData) {
         movieTitle.innerHTML = movieData.title;
 
         const movieYear = document.createElement("span");
-        const year = movieData.release_date.slice(0, 4);
-
-        if (year !== "") {
+        const fullDate = movieData.release_date;
+        
+        if (fullDate !== "" && fullDate !== undefined) {
+          const year = fullDate.slice(0, 4);
           movieYear.innerHTML = "(" + year + ")";
         } else {
           movieYear.innerHTML = "( ? )";
