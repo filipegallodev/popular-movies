@@ -1,17 +1,9 @@
-import { URL_DA_API } from "./rote.js";
 import { initAddMovies } from "../main.js";
 import { getLocalStorageData } from "./localStorage.js";
 
 const pageTitle = document.querySelector(".page-title");
-const userWidthScreen = window.innerWidth;
 
-if(userWidthScreen < 400) {
-  const inputPlaceholder = document.querySelector('.movie-search');
-
-  console.log(inputPlaceholder.setAttribute('placeholder', 'Procure por aqui...'));
-}
-
-export function getPopularMovies() {
+export function getPopularMovies(URL_DA_API) {
   pageTitle.innerHTML = "Filmes Populares (Top 20)";
 
   clearMovieList();
@@ -20,7 +12,7 @@ export function getPopularMovies() {
   );
 }
 
-export function getSearchedMovie() {
+export function getSearchedMovie(URL_DA_API) {
   pageTitle.innerHTML = "Resultados";
 
   const searchInput = document.querySelector(".movie-search").value;
@@ -31,11 +23,11 @@ export function getSearchedMovie() {
       `https://api.themoviedb.org/3/search/movie?api_key=${URL_DA_API}&language=pt-BR&&query=${searchInput}`
     );
   } else {
-    getPopularMovies();
+    getPopularMovies(URL_DA_API);
   }
 }
 
-export function getFavoriteMovies() {
+export function getFavoriteMovies(URL_DA_API) {
   pageTitle.innerHTML = "Meus Favoritos";
 
   const userFavoriteMoviesIds = getLocalStorageData().favoriteMoviesIds;

@@ -1,3 +1,4 @@
+import {URL_DA_API} from "./modules/rote.js";
 import { addMovie } from "./modules/pageBuilder.js";
 import {
   getPopularMovies,
@@ -9,6 +10,14 @@ import {
   verifyLocalStorage,
 } from "./modules/localStorage.js";
 
+const userWidthScreen = window.innerWidth;
+
+if(userWidthScreen < 400) {
+  const inputPlaceholder = document.querySelector('.movie-search');
+
+  console.log(inputPlaceholder.setAttribute('placeholder', 'Procure por aqui...'));
+}
+
 export function initAddMovies(data) {
   const favoriteFilterOption = document.querySelector(".nav-filter");
   const searchInput = document.querySelector(".movie-search").value;
@@ -19,7 +28,7 @@ export function initAddMovies(data) {
         searchIntoFavoriteMovies(data.results[movie]);
 
         if (searchInput === "") {
-          getFavoriteMovies();
+          getFavoriteMovies(URL_DA_API);
           break;
         }
       } else {
@@ -49,10 +58,10 @@ function initMovieSearch() {
   const searchBox = document.querySelector(".movie-search");
   const searchButton = document.querySelector(".search-button");
 
-  searchButton.addEventListener("click", () => getSearchedMovie());
+  searchButton.addEventListener("click", () => getSearchedMovie(URL_DA_API));
   searchBox.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      getSearchedMovie();
+      getSearchedMovie(URL_DA_API);
     }
   });
 }
@@ -95,14 +104,14 @@ function initFavoriteMoviesFilter() {
 
     if (favoriteFilterOption.classList.contains("checked")) {
       favoriteFilterBox.src = "./img/rectangle-full.svg";
-      getFavoriteMovies();
+      getFavoriteMovies(URL_DA_API);
     } else {
       favoriteFilterBox.src = "./img/rectangle.svg";
-      getPopularMovies();
+      getPopularMovies(URL_DA_API);
     }
   });
 }
 
-getPopularMovies();
+getPopularMovies(URL_DA_API);
 initMovieSearch();
 initFavoriteMoviesFilter();
