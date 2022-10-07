@@ -1,5 +1,5 @@
-# Desafio JavaScript + API da Alura 
-> Link do desafio: https://7daysofcode.io/matricula/javascript-e-dom-api
+# Lista de Filmes
+![Capa](https://i.imgur.com/RHLCgTX.png)
 
 ## Objetivo
 Criar uma página com uma lista dinâmica de filmes mais populares do momento consumindo a API do "The Movie DataBase".
